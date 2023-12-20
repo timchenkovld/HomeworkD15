@@ -4,6 +4,7 @@ import com.example.homeworkD15.controller.request.CreateNoteRequest;
 import com.example.homeworkD15.controller.request.UpdateNoteRequest;
 import com.example.homeworkD15.controller.response.NoteResponse;
 import com.example.homeworkD15.entity.NoteEntity;
+import com.example.homeworkD15.entity.UserEntity;
 import com.example.homeworkD15.service.dto.NoteDto;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ public class NoteMapper {
         entity.setId(dto.getId());
         entity.setTitle(dto.getTitle());
         entity.setContent(dto.getContent());
+        entity.setUser(new UserEntity(dto.getUserId()));
         return entity;
     }
 
@@ -40,6 +42,7 @@ public class NoteMapper {
         dto.setId(entity.getId());
         dto.setTitle(entity.getTitle());
         dto.setContent(entity.getContent());
+        dto.setUserId(entity.getUser().getId());
         return dto;
     }
 

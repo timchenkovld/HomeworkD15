@@ -12,8 +12,6 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -29,4 +27,10 @@ public class UserEntity {
 
     @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<NoteEntity> notes = new ArrayList<>();
+
+    public UserEntity() {}
+
+    public UserEntity(UUID id) {
+        this.id = id;
+    }
 }
