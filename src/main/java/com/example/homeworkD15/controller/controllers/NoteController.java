@@ -4,10 +4,14 @@ import com.example.homeworkD15.service.dto.NoteDto;
 import com.example.homeworkD15.service.exception.NoteNotFoundException;
 import com.example.homeworkD15.service.mapping.NoteMapper;
 import com.example.homeworkD15.service.service.NoteService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -75,5 +79,14 @@ public class NoteController {
                                    @CookieValue(value = "userId") UUID userId) throws NoteNotFoundException {
         noteService.deleteById(id, userId);
         return noteList(userId);
+    }
+
+    @GetMapping("/logout")
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().invalidate();
+        Cookie cookie = new Cookie("userId", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return new ModelAndView("redirect:/login");
     }
 }
