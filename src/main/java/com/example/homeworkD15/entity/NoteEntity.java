@@ -21,12 +21,8 @@ public class NoteEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    private UserEntity user;
-
-    @Column(name = "title", length = 15, nullable = false)
-    @Size(min = 1, max = 15)
+    @Column(name = "title", length = 150, nullable = false)
+    @Size(min = 3, max = 150)
     private String title;
 
     @Column(name = "content", nullable = false)

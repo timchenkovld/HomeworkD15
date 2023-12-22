@@ -32,7 +32,7 @@ public class NoteController {
     }
 
     @GetMapping("/list")
-    public ModelAndView noteList(@CookieValue(value = "userId", required = false) UUID userId) {
+    public ModelAndView noteList() {
         ModelAndView result = new ModelAndView("note/allNotes");
         result.addObject("notes", noteMapper.toNoteResponses(noteService.listAll()));
         return result;
@@ -48,38 +48,34 @@ public class NoteController {
 
     @PostMapping("/create")
     public ModelAndView createNote(
-            @CookieValue(value = "userId") UUID userId,
-            @RequestParam(value = "title") @Size(min = 1, max = 15) String title,
+            @RequestParam(value = "title") @Size(min = 3, max = 150) String title,
             @RequestParam(value = "content") @NotBlank String content) {
         NoteDto dto = new NoteDto();
         dto.setTitle(title);
         dto.setContent(content);
-        dto.setUserId(userId);
         noteService.add(dto);
-        return noteList(userId);
+        return noteList();
     }
 
     @PostMapping("/edit")
-    public ModelAndView updateNote(
-            @CookieValue(value = "userId") UUID userId,
-            @NotNull @RequestParam(value = "id") String id,
-            @Size(min = 1, max = 250) @RequestParam(value = "title") String title,
+    public ModelAndView updateNote(@NotNull @RequestParam(value = "id") String id,
+            @Size(min = 3, max = 250) @RequestParam(value = "title") String title,
             @NotEmpty @RequestParam(value = "content") String content) throws NoteNotFoundException {
         NoteDto dto = new NoteDto();
         dto.setId(UUID.fromString(id));
         dto.setTitle(title);
         dto.setContent(content);
-        dto.setUserId(userId);
         noteService.update(dto);
-        return noteList(userId);
+        return noteList();
     }
 
     @PostMapping("/delete")
-    public ModelAndView deleteNote(@NotNull @RequestParam("id") UUID id,
-                                   @CookieValue(value = "userId") UUID userId) throws NoteNotFoundException {
-        noteService.deleteById(id, userId);
-        return noteList(userId);
+    public ModelAndView deleteNote(@NotNull @RequestParam("id") UUID id) throws NoteNotFoundException {
+        noteService.deleteById(id);
+        return noteList();
     }
+
+
 
     @GetMapping("/logout")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {

@@ -12,7 +12,7 @@ public interface NoteService {
 
     NoteDto add(NoteDto note);
 
-    void deleteById(UUID id, UUID userId) throws NoteNotFoundException;
+    void deleteById(UUID id) throws NoteNotFoundException;
 
     void update(NoteDto note) throws NoteNotFoundException;
 
